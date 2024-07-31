@@ -1,16 +1,15 @@
+import { HEADERS, POST_URL } from "../constants/constant";
+
+// GET METHOD
 export async function getData(url) {
   const options = {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      projectId: "66a9f27b39e2fdc09bbba036",
-      environmentId: "66a9f27c39e2fdc09bbba037",
-    },
+    headers: HEADERS,
   };
 
   try {
     const res = await fetch(url, options);
-    console.log(res);
+    // console.log(res);
 
     if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
@@ -25,3 +24,22 @@ export async function getData(url) {
   }
 }
 
+// POST METHOD
+export async function postEmployeeData(employeeData) {
+  const options = {
+    method: "POST",
+    headers: HEADERS,
+    body: JSON.stringify(employeeData),
+  };
+
+  try {
+    const response = await fetch(POST_URL, options);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
