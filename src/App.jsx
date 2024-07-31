@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { getData } from "./api/employeeAPI";
+import { getEmployeeData } from "./api/employeeAPI";
 import { GET_URL } from "./constants/constant";
 import Form from "./components/Form";
 
@@ -10,7 +10,7 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await getData(GET_URL);
+        const data = await getEmployeeData(GET_URL);
         setData(data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -40,7 +40,7 @@ function App() {
           </li>
         ))}
       </ol>
-      {/* <Form setData={setData} /> */}
+      <Form setData={setData} />
     </>
   );
 }

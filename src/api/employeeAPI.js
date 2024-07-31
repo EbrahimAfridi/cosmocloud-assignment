@@ -1,7 +1,7 @@
 import { HEADERS, POST_URL } from "../constants/constant";
 
 // GET METHOD
-export async function getData(url) {
+export async function getEmployeeData(url) {
   const options = {
     method: "GET",
     headers: HEADERS,
@@ -43,3 +43,5 @@ export async function postEmployeeData(employeeData) {
     throw error;
   }
 }
+
+// PATCH METHOD

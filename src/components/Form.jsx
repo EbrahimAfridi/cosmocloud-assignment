@@ -5,11 +5,11 @@ function Form({ setData }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phoneNo: "",
-    address: "",
+    phone_number: "",
+    address_line_1: "",
     city: "",
     country: "",
-    zipCode: "",
+    zip_code: "",
   });
 
   const handleChange = (e) => {
@@ -24,9 +24,10 @@ function Form({ setData }) {
     e.preventDefault();
 
     try {
-      const response = await postEmployeeData(formData);
-      console.log("Success:", response);
-      setData(response);
+      const id = await postEmployeeData(formData);
+      console.log("Success:", id);
+
+      // setData(response);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -67,30 +68,36 @@ function Form({ setData }) {
           />
         </div>
         <div className="flex flex-col">
-          <label htmlFor="phoneNo" className="mb-1 text-gray-600 font-semibold">
+          <label
+            htmlFor="phone_number"
+            className="mb-1 text-gray-600 font-semibold"
+          >
             Phone no.
           </label>
           <input
             className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             type="number"
-            name="phoneNo"
-            id="phoneNo"
+            name="phone_number"
+            id="phone_number"
             placeholder="Phone no."
-            value={formData.phoneNo}
+            value={formData.phone_number}
             onChange={handleChange}
           />
         </div>
         <div className="flex flex-col">
-          <label htmlFor="address" className="mb-1 text-gray-600 font-semibold">
+          <label
+            htmlFor="address_line_1"
+            className="mb-1 text-gray-600 font-semibold"
+          >
             Address
           </label>
           <input
             className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             type="text"
-            name="address"
-            id="address"
+            name="address_line_1"
+            id="address_line_1"
             placeholder="Address"
-            value={formData.address}
+            value={formData.address_line_1}
             onChange={handleChange}
           />
         </div>
@@ -123,16 +130,19 @@ function Form({ setData }) {
           />
         </div>
         <div className="flex flex-col">
-          <label htmlFor="zipCode" className="mb-1 text-gray-600 font-semibold">
+          <label
+            htmlFor="zip_code"
+            className="mb-1 text-gray-600 font-semibold"
+          >
             Zip Code
           </label>
           <input
             className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             type="text"
-            name="zipCode"
-            id="zipCode"
+            name="zip_code"
+            id="zip_code"
             placeholder="Zip Code"
-            value={formData.zipCode}
+            value={formData.zip_code}
             onChange={handleChange}
           />
         </div>
