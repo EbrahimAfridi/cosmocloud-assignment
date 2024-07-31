@@ -22,8 +22,8 @@ function App() {
 
   return (
     <>
-      <UserList data={data} />
-      {/* <Form setData={setData} /> */}
+      <UserList data={data} setData={setData}/>
+      <Form setData={setData} />
     </>
   );
 }

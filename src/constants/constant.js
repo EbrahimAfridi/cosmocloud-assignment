@@ -7,6 +7,12 @@ export const POST_URL =
 export const PATCH_URL =
   "https://free-ap-south-1.cosmocloud.io/development/api/employeedb/{id}";
 
+export const GET_BY_ID_URL =
+  "https://free-ap-south-1.cosmocloud.io/development/api/employeedb/{id}";
+
+export const DELETE_BY_ID_URL =
+  "https://free-ap-south-1.cosmocloud.io/development/api/employeedb/{id}";
+
 export const HEADERS = {
   "Content-Type": "application/json",
   projectId: "66a9f27b39e2fdc09bbba036",

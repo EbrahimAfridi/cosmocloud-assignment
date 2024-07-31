@@ -1,20 +1,37 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { deleteEmployeeData } from "../api/employeeAPI";
+import { useNavigate } from "react-router-dom";
 
-const UserList = ({ data }) => {
+const UserList = ({ data, setData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+  const navigate = useNavigate();
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteEmployeeData(id);
+      const updatedData = data.data.filter((emp) => emp._id !== id);
+      setData({ data: updatedData });
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error deleting employee:", error);
+    }
+  };
+
+  const openModal = (id) => {
+    setSelectedEmployeeId(id);
+    setIsModalOpen(true);
+  };
+
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white rounded-lg shadow-md">
+    <div className="overflow-x-auto bg-zinc-900 h-screen w-screen">
+      <table className="min-w-full bg-zinc-800 rounded-lg shadow-md">
         <thead>
           <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
             <th className="py-3 px-6 text-left">ID</th>
             <th className="py-3 px-6 text-left">Name</th>
-            <th className="py-3 px-6 text-left">Email</th>
-            <th className="py-3 px-6 text-left">Address</th>
-            <th className="py-3 px-6 text-left">City</th>
-            <th className="py-3 px-6 text-left">Country</th>
-            <th className="py-3 px-6 text-left">Zip Code</th>
-            <th className="py-3 px-6 text-left">Option</th>
+            <th className="py-3 px-6 text-left">Options</th>
           </tr>
         </thead>
         <tbody className="text-gray-600 text-sm font-light">
@@ -26,24 +43,36 @@ const UserList = ({ data }) => {
               <td className="py-3 px-6 text-left whitespace-nowrap">
                 {emp._id}
               </td>
-              <td className="py-3 px-6 text-left">{emp.name}</td>
-              <td className="py-3 px-6 text-left">{emp.email}</td>
-              <td className="py-3 px-6 text-left">{emp.address_line_1}</td>
-              <td className="py-3 px-6 text-left">{emp.city}</td>
-              <td className="py-3 px-6 text-left">{emp.country}</td>
-              <td className="py-3 px-6 text-left">{emp.zip_code}</td>
+
               <td className="py-3 px-6 text-left">
-                <button onClick={() => setIsModalOpen(!isModalOpen)}>✏️</button>
+                <Link key={emp._id} to={`/details/${emp._id}`}>
+                  {emp.name}
+                </Link>
+              </td>
+
+              <td className="py-3 px-6 text-left">
+                <button onClick={() => openModal(emp._id)}>✏️</button>
               </td>
             </tr>
           ))}
-          {isModalOpen && (
-            <div className="font-bold text-black px-4 py-2 absolute right-10 shadow rounded hover:bg-zinc-100">
-              <button>Update</button>
-            </div>
-          )}
         </tbody>
       </table>
+      {isModalOpen && (
+        <div className="flex flex-col font-bold text-black absolute right-52 shadow rounded">
+          <button
+            className="px-4 py-2 hover:bg-blue-600 hover:text-white"
+            onClick={() => navigate("/create")}
+          >
+            Update
+          </button>
+          <button
+            className="px-4 py-2 text-red-700 hover:bg-red-700 hover:text-white"
+            onClick={() => handleDelete(selectedEmployeeId)}
+          >
+            Delete
+          </button>
+        </div>
+      )}
     </div>
   );
 };
