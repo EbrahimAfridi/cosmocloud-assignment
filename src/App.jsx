@@ -3,10 +3,10 @@ import "./App.css";
 import { getEmployeeData } from "./api/employeeAPI";
 import { GET_URL } from "./constants/constant";
 import Form from "./components/Form";
+import UserList from "./components/UserList";
 
 function App() {
   const [data, setData] = useState({ data: [], page: {} });
-
   useEffect(() => {
     async function fetchData() {
       try {
@@ -22,24 +22,7 @@ function App() {
 
   return (
     <>
-      <ol>
-        {data.data.map((emp) => (
-          <li key={emp._id}>
-            {emp.name}
-            <br />
-            {emp.email}
-            <br />
-            {emp.address_line_1}
-            <br />
-            {emp.city}
-            <br />
-            {emp.country}
-            <br />
-            {emp.zip_code}
-            <br />
-          </li>
-        ))}
-      </ol>
+      <UserList data={data} />
       <Form setData={setData} />
     </>
   );
