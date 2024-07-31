@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { postEmployeeData } from "../api/employeeAPI";
+import { getEmployeeData, postEmployeeData } from "../api/employeeAPI";
+import { GET_URL } from "../constants/constant";
 
 function Form({ setData }) {
   const [formData, setFormData] = useState({
@@ -26,8 +27,8 @@ function Form({ setData }) {
     try {
       const id = await postEmployeeData(formData);
       console.log("Success:", id);
-
-      // setData(response);
+      const newAllUserData = await getEmployeeData(GET_URL);
+      setData(newAllUserData);
     } catch (error) {
       console.error("Error:", error);
     }
