@@ -23,7 +23,7 @@ function App() {
   return (
     <>
       <UserList data={data} />
-      <Form setData={setData} />
+      {/* <Form setData={setData} /> */}
     </>
   );
 }

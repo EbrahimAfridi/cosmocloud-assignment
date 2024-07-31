@@ -45,3 +45,21 @@ export async function postEmployeeData(employeeData) {
 }
 
 // PATCH METHOD
+export async function updateEmployeeData(employeeData) {
+  const options = {
+    method: "PATCH",
+    headers: HEADERS,
+    body: JSON.stringify(employeeData),
+  };
+
+  try {
+    const response = await fetch(POST_URL, options);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
