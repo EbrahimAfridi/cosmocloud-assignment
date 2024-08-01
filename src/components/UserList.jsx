@@ -18,15 +18,18 @@ const UserList = ({ data, setData }) => {
       console.error("Error deleting employee:", error);
     }
   };
+  const handleUpdate = (id) => {
+    navigate(`/update/${id}`);
+  };
 
   const openModal = (id) => {
     setSelectedEmployeeId(id);
-    setIsModalOpen(true);
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
-    <div className="overflow-x-auto bg-zinc-900 h-screen w-screen">
-      <table className="min-w-full bg-zinc-800 rounded-lg shadow-md">
+    <div className="overflow-x-auto h-screen w-screen">
+      <table className="min-w-full bg-white rounded-lg shadow-md">
         <thead>
           <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
             <th className="py-3 px-6 text-left">ID</th>
@@ -61,7 +64,7 @@ const UserList = ({ data, setData }) => {
         <div className="flex flex-col font-bold text-black absolute right-52 shadow rounded">
           <button
             className="px-4 py-2 hover:bg-blue-600 hover:text-white"
-            onClick={() => navigate("/create")}
+            onClick={() => handleUpdate(selectedEmployeeId)}
           >
             Update
           </button>

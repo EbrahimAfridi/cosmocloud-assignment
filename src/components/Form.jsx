@@ -1,6 +1,12 @@
-import { useState } from "react";
-import { getEmployeeData, postEmployeeData } from "../api/employeeAPI";
+import { useState, useEffect } from "react";
+import {
+  getEmployeeData,
+  getEmployeeDataById,
+  postEmployeeData,
+  updateEmployeeData,
+} from "../api/employeeAPI";
 import { GET_URL } from "../constants/constant";
+import { useLocation } from "react-router-dom";
 
 function Form({ setData }) {
   const [formData, setFormData] = useState({
@@ -12,6 +18,26 @@ function Form({ setData }) {
     country: "",
     zip_code: "",
   });
+  const location = useLocation();
+  const { id, update } = location.state || {};
+
+  useEffect(() => {
+    if (update && id) {
+      const fetchEmployeeData = async () => {
+        const data = await getEmployeeDataById(id, GET_URL);
+        setFormData({
+          name: data.name || "",
+          email: data.email || "",
+          phone_number: data.phone_number || "",
+          address_line_1: data.address_line_1 || "",
+          city: data.city || "",
+          country: data.country || "",
+          zip_code: data.zip_code || "",
+        });
+      };
+      fetchEmployeeData();
+    }
+  }, [id, update]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,8 +55,9 @@ function Form({ setData }) {
       if (buttonType === "createUser") {
         const id = await postEmployeeData(formData);
         console.log("Success:", id);
-      } else {
-        // call -> updateEmployeeData();
+      } else if (buttonType === "updateUser" && update && id) {
+        await updateEmployeeData(id, formData);
+        console.log("Update Success");
       }
       const newAllUserData = await getEmployeeData(GET_URL);
       setData(newAllUserData);
@@ -41,7 +68,9 @@ function Form({ setData }) {
 
   return (
     <main className="p-10">
-      <h1 className="text-3xl font-semibold my-4">Create New Employee</h1>
+      <h1 className="text-3xl font-semibold my-4">
+        {update ? "Update Employee" : "Create New Employee"}
+      </h1>
       <hr className="border-zinc-300 mb-10" />
       <form
         onSubmit={handleSubmit}
@@ -151,7 +180,8 @@ function Form({ setData }) {
             </label>
             <input
               className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              type="text"
+              type="number"
+              min="0"
               name="zip_code"
               id="zip_code"
               placeholder="Zip Code"
@@ -160,20 +190,17 @@ function Form({ setData }) {
             />
           </div>
         </div>
-        <div className="flex justify-start mt-4 gap-5">
+        <div className="flex justify-center mt-4">
           <button
-            className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             type="submit"
             name="createUser"
+            className={`w-full px-4 py-2 font-semibold text-white rounded ${
+              update
+                ? "bg-blue-600 hover:bg-blue-700"
+                : "bg-green-500 hover:bg-green-600"
+            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
           >
-            Create User
-          </button>
-          <button
-            className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            type="submit"
-            name="updateUser"
-          >
-            Update User
+            {update ? "Update User" : "Create User"}
           </button>
         </div>
       </form>

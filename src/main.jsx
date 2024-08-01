@@ -6,25 +6,33 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Form from "./components/Form.jsx";
 import ErrorPage from "./components/ErrorPage.jsx";
 import UserDetails from "./pages/UserDetails.jsx";
+import UpdateEmployee from "./pages/UpdateEmployee.jsx";
+import { EmployeeProvider } from "./context/EmployeeContext.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <ErrorPage />
+    errorElement: <ErrorPage />,
   },
   {
     path: "/create",
-    element: <Form />
+    element: <Form />,
   },
   {
     path: "/details/:id",
-    element: <UserDetails />
-  }
+    element: <UserDetails />,
+  },
+  {
+    path: "/update/:id",
+    element: <UpdateEmployee />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <EmployeeProvider>
+      <RouterProvider router={router} />
+    </EmployeeProvider>
   </React.StrictMode>
 );

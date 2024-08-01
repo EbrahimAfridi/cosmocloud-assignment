@@ -1,4 +1,9 @@
-import { DELETE_BY_ID_URL, HEADERS, POST_URL } from "../constants/constant";
+import {
+  DELETE_BY_ID_URL,
+  HEADERS,
+  PATCH_URL,
+  POST_URL,
+} from "../constants/constant";
 
 // GET METHOD
 export async function getEmployeeData(url) {
@@ -30,7 +35,7 @@ export async function getEmployeeDataById(id, url) {
     method: "GET",
     headers: HEADERS,
   };
-  
+
   try {
     const res = await fetch(URL_WITH_DYNM_ID, options);
     // console.log(res);
@@ -68,15 +73,15 @@ export async function postEmployeeData(employeeData) {
 }
 
 // PATCH METHOD
-export async function updateEmployeeData(employeeData) {
+export async function updateEmployeeData(id, employeeData) {
   const options = {
     method: "PATCH",
     headers: HEADERS,
     body: JSON.stringify(employeeData),
   };
-
+  const UPDATE_URL = PATCH_URL.replace("{id}", id);
   try {
-    const response = await fetch(POST_URL, options);
+    const response = await fetch(UPDATE_URL, options);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
