@@ -5,8 +5,16 @@ import { Input } from "@/components/ui/input";
 import { useParams, useNavigate } from "react-router-dom";
 import { getEmployeeDataById, updateEmployeeData } from "@/api/employeeAPI";
 import { useState, useEffect } from "react";
+import countries from "../constants/countries.json";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
-export default function Component() {
+export default function UpdateEmployee() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -44,6 +52,13 @@ export default function Component() {
     loadEmployee();
   }, [id]);
 
+  const handleSelectChange = (name, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -66,7 +81,6 @@ export default function Component() {
   if (error) return <div>{error}</div>;
 
   return (
-    // <div className="flex flex-col items-center justify-start min-h-screen bg-gray-100">
     <Card className="w-full min-h-full p-6 sm:p-8 md:p-10">
       <form onSubmit={handleSubmit} className="space-y-4">
         <CardHeader>
@@ -141,13 +155,23 @@ export default function Component() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="country">Country</Label>
-              <Input
+              <Select
                 id="country"
                 name="country"
                 value={formData.country}
-                onChange={handleChange}
-                required
-              />
+                onValueChange={(value) => handleSelectChange("country", value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select country" />
+                </SelectTrigger>
+                <SelectContent>
+                  {countries.map((country) => (
+                    <SelectItem key={country.Code} value={country.Name}>
+                      {country.Name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="zip_code">Zip Code</Label>
@@ -163,7 +187,6 @@ export default function Component() {
         </CardContent>
       </form>
     </Card>
-    // </div>
   );
 }
 

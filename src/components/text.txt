@@ -1,98 +1,42 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { getEmployeeDataById, updateEmployeeData } from "@/api/employeeAPI";
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import { Button } from "@/components/ui/button"
 
-function UpdateEmployee() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: "",
-    address_line_1: "",
-    city: "",
-    country: "",
-    zip_code: "",
-    email: "",
-    phone_number: "",
-  });
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const loadEmployee = async () => {
-      try {
-        const employee = await getEmployeeDataById(id);
-        setFormData({
-          name: employee.name,
-          address_line_1: employee.address_line_1,
-          city: employee.city,
-          country: employee.country,
-          zip_code: employee.zip_code,
-          email: employee.email,
-          phone_number: employee.phone_number,
-        });
-      } catch (err) {
-        setError("Error fetching employee details");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadEmployee();
-  }, [id]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // const employeeData = {
-      //   id: id,
-      //   name: formData.name,
-      //   address_line_1: formData.address_line_1,
-      //   city: formData.city,
-      //   country: formData.country,
-      //   zip_code: formData.zip_code,
-      //   email: formData.email,
-      //   phone_number: formData.phone_number,
-      // };
-      await updateEmployeeData(id, formData);
-      navigate(`/employee/${id}`);
-    } catch (err) {
-      setError("Error updating employee");
-    }
-  };
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-
+export default function Component() {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Update Employee</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="name">Name</Label>
-            <Input
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-8 md:mb-12">
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">Add New Employee</h1>
+          <p className="text-muted-foreground text-lg">Fill out the form below to add a new employee to your team.</p>
+        </div>
+        {error && <div className="text-red-500 mb-4">{error}</div>}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
               id="name"
               name="name"
               value={formData.name}
               onChange={handleChange}
               required
             />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+            </div>
           </div>
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="address_line_1">Address Line 1</Label>
             <Input
               id="address_line_1"
@@ -102,8 +46,9 @@ function UpdateEmployee() {
               required
             />
           </div>
-          <div>
-            <Label htmlFor="city">City</Label>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="city">City</Label>
             <Input
               id="city"
               name="city"
@@ -111,19 +56,32 @@ function UpdateEmployee() {
               onChange={handleChange}
               required
             />
-          </div>
-          <div>
-            <Label htmlFor="country">Country</Label>
-            <Input
-              id="country"
-              name="country"
-              value={formData.country}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="zip_code">Zip Code</Label>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="country">Country</Label>
+              <Select id="country">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select country" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="usa">United States</SelectItem>
+                  <SelectItem value="canada">Canada</SelectItem>
+                  <SelectItem value="uk">United Kingdom</SelectItem>
+                  <SelectItem value="australia">Australia</SelectItem>
+                  <SelectItem value="germany">Germany</SelectItem>
+                </SelectContent>
+              </Select>
+              //<Label htmlFor="country">Country</Label>
+            //<Input
+              //id="country"
+              //name="country"
+              //value={formData.country}
+              //onChange={handleChange}
+              //required
+            ///>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="zip_code">Zip Code</Label>
             <Input
               id="zip_code"
               name="zip_code"
@@ -131,20 +89,10 @@ function UpdateEmployee() {
               onChange={handleChange}
               required
             />
+            </div>
           </div>
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="phone_number">Phone Number</Label>
+          <div className="space-y-2">
+            <Label htmlFor="phone_number">Phone_number</Label>
             <Input
               id="phone_number"
               name="phone_number"
@@ -153,11 +101,11 @@ function UpdateEmployee() {
               required
             />
           </div>
-          <Button type="submit">Update Employee</Button>
+          <div className="flex justify-end">
+            <Button type="submit">Add Employee</Button>
+          </div>
         </form>
-      </CardContent>
-    </Card>
-  );
+      </div>
+    </div>
+  )
 }
-
-export default UpdateEmployee;
