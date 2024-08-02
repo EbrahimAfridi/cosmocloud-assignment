@@ -1,39 +1,42 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
 import "./index.css";
-// import { createBrowserRouter, RouterProvider } from "react-router-dom";
-// import Form from "./components/Form.jsx";
-// import ErrorPage from "./components/ErrorPage.jsx";
-// import UserDetails from "./pages/UserDetails.jsx";
-// import UpdateEmployee from "./pages/UpdateEmployee.jsx";
-// import { EmployeeProvider } from "./context/EmployeeContext.jsx";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AddEmployee from "./pages/AddEmployee.jsx";
+import UpdateEmployee from "./pages/UpdateEmployee.jsx";
+import ErrorPage from "./pages/ErrorPage.jsx";
+import UserDetails from "./pages/UserDetails.jsx";
+import UserList from "./pages/UserList.jsx";
+import App from "./App";
 
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <App />,
-//     errorElement: <ErrorPage />,
-//   },
-//   // {
-//   //   path: "/create",
-//   //   element: <Form />,
-//   // },
-//   {
-//     path: "/details/:id",
-//     element: <UserDetails />,
-//   },
-//   // {
-  //   path: "/update/:id",
-  //   element: <UpdateEmployee />,
-  // },
-// ]);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        index: true,
+        element: <UserList />,
+      },
+      {
+        path: "/add-employee",
+        element: <AddEmployee />,
+      },
+      {
+        path: "/employee/:id",
+        element: <UserDetails />,
+      },
+      {
+        path: "/update-employee/:id",
+        element: <UpdateEmployee />,
+      },
+    ],
+    errorElement: <ErrorPage />,
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    {/* <EmployeeProvider> */}
-      {/* <RouterProvider router={router} /> */}
-      <App />
-    {/* </EmployeeProvider> */}
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
