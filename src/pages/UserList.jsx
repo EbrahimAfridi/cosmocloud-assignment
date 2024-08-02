@@ -69,7 +69,7 @@ function UserList() {
             </TableHeader>
             <TableBody>
               {employees.map((employee) => (
-                <TableRow key={employee._id}>
+                <TableRow key={employee._id} className="hover:bg-zinc-200">
                   <TableCell>{employee._id}</TableCell>
                   <TableCell>{employee.name}</TableCell>
                   <TableCell className="text-right">
